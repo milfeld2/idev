@@ -58,6 +58,7 @@
 #   Changed format from 9 to 15 chars for queue name (grace-serial is 12 chars)
 #   Abort if -N is used in grace-serial queue.
 #                                                01/21/2016 KentM 
+#
 #------------------------------------------------------------------------------
 #
 #               Versions Number
