@@ -56,6 +56,7 @@
 #   Added -p <queue_name> option to squeue (to see queue)
 #   Allow -n 1 for default for grace-serial queue
 #   Changed format from 9 to 15 for queue name (grace-serial is 12 chars)
+#   Interactive job limit for grace queue = 1.
 #                                                01/29/2016 KentM 
 #------------------------------------------------------------------------------
 #
