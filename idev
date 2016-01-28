@@ -694,7 +694,7 @@ fi
    fi
 
    if [[ $known_option == "no" ]]; then
-                     echo -e "\n ERROR: **The $1 option is not know."
+                     echo -e "\n ERROR: **The $1 option is not known."
                      echo -e "          To see options, execute: idev -help."
                      do_exit=yes; OPT_ERR=2
             
