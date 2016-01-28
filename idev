@@ -1,7 +1,7 @@
 #!/bin/bash
-#set -x
-# User is forces to use either SGE or SLURM options, except
-# -p and -q can both be used for either batch system
+# set -x
+# User is forced to use either SGE or SLURM options, except
+# -p and -q can both be used for either batch system.
 #
 # For Stampede the system startup file /etc/profile.d/z95_idev.<csh|sh>
 # takes care of sourcing /tmp/idev_<csh|sh>_env.<jobid> if the file
@@ -55,10 +55,8 @@
 #Hidden grace-serial queue 
 #   Added -p <queue_name> option to squeue (to see queue)
 #   Allow -n 1 for default for grace-serial queue
-#   Changed format from 9 to 15 chars for queue name (grace-serial is 12 chars)
-#   Abort if -N is used in grace-serial queue.
-#                                                01/21/2016 KentM 
-#
+#   Changed format from 9 to 15 for queue name (grace-serial is 12 chars)
+#                                                01/29/2016 KentM 
 #------------------------------------------------------------------------------
 #
 #               Versions Number
@@ -749,6 +747,35 @@ if [[ $total_tasks_set == no && $nodes_set == yes ]] ; then
 
 fi
 
+#      if grace-serial queue     
+if [[ $MY_QUEUE =~ grace-serial ]]; then
+
+  squeue -p $MY_QUEUE "$squeue_opts" -u $USER | \
+            awk '$3 ~ /idv[0-9][0-9][0-9][0-9][0-9]/' | \
+            awk '{print $5}' | grep R >/dev/null
+  if [ $? = 0 ]; then
+    using_node=`squeue -p $MY_QUEUE "$squeue_opts" -u $USER | \
+            awk '$3 ~ /idv[0-9][0-9][0-9][0-9][0-9]/' | \
+            awk '{print $8}' `
+    echo ""
+    echo " ERROR:  Only one ONE idev interactive session allowed in $MY_QUEUE queue."
+    echo ""
+    echo " You are executing idev again in the $MY_QUEUE queue."
+    echo "    In this queue only 1 idev interactive job is allowed."
+    echo "    You may have multiple windows open to the job (node) for an active"
+    echo "    IDEV session by opening a new window on a login node, and SSHing"
+    echo "    to the node of the job with the command:"
+    echo ""
+    echo "                 ssh -Y $using_node   "
+    echo ""
+    echo " In a new window you can customize your environment if"
+    echo " you want to work interactively on different projects."  
+    echo ""
+    do_exit=yes; OPT_ERR=2
+  fi
+fi
+
+
 ############################################end  Dependent options
 
 
@@ -1395,6 +1422,7 @@ $MY_RESERVATION
 
 $idev_pwd_cmd
 $idev_rm_perl5
+#                         Remove old files (needed for grace-serial queue).
 rm -rf /tmp/idev_${USER}_${idev_login_shell}_env.[0-9]*
 $DIR/idev_utils env_replication ${idev_login_shell} \$SLURM_JOB_ID
 $CREATE_NODE_LIST_CMD
@@ -1495,7 +1523,7 @@ fi
 #####
           while [ $found_env_file == 1 ]; do
           
-              ssh -o "StrictHostKeyChecking no" $node "ls /tmp/idev_${idev_login_shell}_env.${JOBID}" >& /dev/null
+              ssh -o "StrictHostKeyChecking no" $node "ls /tmp/idev_${USER}_${idev_login_shell}_env.${JOBID}" >& /dev/null
               if [[ $? == 0 ]]; then
                  found_env_file=0
                  if [[ $time_waited_env_file > 0 ]]; then
@@ -1537,4 +1565,3 @@ fi
 #trapping
 #http://rimuhosting.com/knowledgebase/linux/misc/trapping-ctrl-c-in-bash
 #http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
-

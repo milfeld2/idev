@@ -157,7 +157,8 @@ sub env_replication(@){
 
 ##                     Changed for 9.2  my_<shell>... --> idev_<shell>...
 ## $myenv_filename = "/tmp/idev_${my_shell}_env.${my_idev}";
-   $myenv_filename = "/tmp/idev_${USER}_${my_shell}_env.${my_idev}";
+## $myenv_filename = "/tmp/idev_${USER}_${my_shell}_env.${my_idev}";
+   $myenv_filename = "/tmp/idev_$ENV{USER}_${my_shell}_env.${my_idev}";
    if ( $my_shell eq "bash" ){
      $CMD   = "export ";
      $UNCMD = "unset ";
