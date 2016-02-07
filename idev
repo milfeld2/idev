@@ -74,7 +74,7 @@
      MY_SYS=`echo $myhostname | awk 'BEGIN { FS = "." } ; { print $2 }'`
   fi
 
-
+#800 comment her 800_Wfix
   srun=off        # Don't use srun on Stampede
 # trap ctrl-c and call ctrl_c()
 trap ctrl_c INT EXIT
