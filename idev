@@ -66,6 +66,7 @@
    IDEV_VER=1.00
    IDEV_SETUP_VER=1.00
 
+#NOTE:  use hostname -f
 #Determine the system
   myhostname=`hostname -f`
   if [[ $myhostname =~ nid ]] ; then
