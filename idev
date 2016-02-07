@@ -70,6 +70,7 @@
   myhostname=`hostname -f`
   if [[ $myhostname =~ nid ]] ; then
      MY_SYS=ls5  #I'm on a MOM node (login0, etc.)     
+#10_Wfix
   else
      MY_SYS=`echo $myhostname | awk 'BEGIN { FS = "." } ; { print $2 }'`
   fi
