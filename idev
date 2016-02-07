@@ -81,6 +81,7 @@ trap ctrl_c INT EXIT
 did_exit=no
 exit_msg=""
 
+#800  comment for 900_Wfix
 #                         Trap Function.  Deletes job on exit of this script
 function ctrl_c() {
                          #Job submitted, and job id available.
