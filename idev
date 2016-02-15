@@ -1553,6 +1553,7 @@ fi
           done
 
 #####
+#30_fi
 
           echo "--> Creating interactive terminal session (login) on $use_node_type node $node."
  #                                            Finally!
